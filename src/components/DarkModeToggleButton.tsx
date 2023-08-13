@@ -2,16 +2,17 @@ import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import { useDarkMode } from '../contexts/DarkModeContext';
+import { useTheme } from '@mui/material/styles';
 
 interface DarkModeToggleButtonProps {
   isDarkModeButtonTopRight: boolean;
 }
 
 const DarkModeToggleButton: React.FC<DarkModeToggleButtonProps> = ({ isDarkModeButtonTopRight }) => {
-  const { darkMode, toggleDarkMode } = useDarkMode();
+  const { toggleDarkMode } = useDarkMode();
 
   const buttonStyle: React.CSSProperties = {
-    color: 'secondary.main',
+    color: useTheme().palette.secondary.main,
     position: 'fixed',
     bottom: isDarkModeButtonTopRight ? 'auto' : '2%',
     top: isDarkModeButtonTopRight ? '2%' : 'auto',

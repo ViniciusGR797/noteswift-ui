@@ -20,9 +20,7 @@ export const DarkModeProvider: React.FC<DarkModeProviderProps> = ({ children }) 
   }, [darkMode]);
 
   const toggleDarkMode = () => {
-    console.log(darkMode)
     setDarkMode(!darkMode);
-    window.location.reload();
   };
 
   return (
@@ -31,7 +29,6 @@ export const DarkModeProvider: React.FC<DarkModeProviderProps> = ({ children }) 
     </DarkModeContext.Provider>
   );
 };
-
 export const useDarkMode = () => {
   const context = useContext(DarkModeContext);
   if (context === undefined) {
