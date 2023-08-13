@@ -11,8 +11,9 @@ import LogoBox from '../components/LogoBox';
 import TextComponent from '../components/TextComponent';
 import FilledButton from '../components/FilledButton';
 import OutlinedButton from '../components/OutlinedButton';
+import { Link } from 'react-router-dom';
 
-const Home: React.FC = () => {
+const HomePage: React.FC = () => {
     const { darkMode, toggleDarkMode } = useDarkMode();
     const currentTheme = darkMode ? darkTheme : lightTheme;
 
@@ -25,8 +26,13 @@ const Home: React.FC = () => {
                 <Copyright />
                 <LogoBox size="60%" position={{ top: '10%', left: '50%', transform: 'translateX(-50%)' }} />
                 <TextComponent fontSize="2.2vw" position={{ top: '45%', left: '50%', transform: 'translateX(-50%)' }} text="O poder das anotações ao seu alcance" />
-                <FilledButton position={{ bottom: '20%', left: '20%' }} label="Login" />
-                <OutlinedButton position={{ bottom: '20%', right: '20%' }} label="Cadastrar" />
+                <Link to="/login">
+                    <FilledButton position={{ bottom: '20%', left: '20%' }} label="Login" />
+                </Link>
+
+                <Link to="/register">
+                    <OutlinedButton position={{ bottom: '20%', right: '20%' }} label="Cadastrar" />
+                </Link>
 
                 {/* Restante do conteúdo do aplicativo */}
             </div>
@@ -34,8 +40,4 @@ const Home: React.FC = () => {
     );
 };
 
-export default Home;
-function setTheme(currentTheme: Theme) {
-    throw new Error('Function not implemented.');
-}
-
+export default HomePage;
