@@ -12,7 +12,6 @@ const Copyright: React.FC = () => {
         alignItems: 'center',
         fontSize: '1.2vw',
         color: useTheme().palette.secondary.main,
-        fontFamily: 'Montserrat, sans-serif', 
     };
 
     return (

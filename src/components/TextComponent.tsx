@@ -31,7 +31,6 @@ const TextComponent: React.FC<TextComponentProps> = ({
     justifyContent: 'center',
     textAlign: 'center',
     color: useTheme().palette.secondary.main,
-    fontFamily: 'Montserrat, sans-serif', 
   };
 
   return (

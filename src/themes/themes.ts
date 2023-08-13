@@ -9,6 +9,12 @@ const lightTheme = createTheme({
         secondary: {
             main: '#656565', 
         },
+        background: {
+            default: '#FFFFFF',
+        },        
+    },
+    typography: {
+        fontFamily: 'Montserrat, sans-serif', 
     },
 });
 
@@ -21,6 +27,12 @@ const darkTheme = createTheme({
         secondary: {
             main: '#DCDCDC', 
         },
+        background: {
+            default: '#000000',
+        },
+    },
+    typography: {
+        fontFamily: 'Montserrat, sans-serif', 
     },
 });
 

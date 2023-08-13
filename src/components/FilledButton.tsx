@@ -29,7 +29,6 @@ const FilledButton: React.FC<FilledButtonProps> = ({
     width: '25%', 
     height: '10%',
     borderRadius: '50px',
-    fontFamily: 'Montserrat, sans-serif',
     fontWeight: 'bold',
     fontSize: '1.8vw',
     color: '#ffffff', 
