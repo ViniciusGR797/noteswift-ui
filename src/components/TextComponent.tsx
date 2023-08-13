@@ -15,7 +15,7 @@ interface TextComponentProps {
 }
 
 const TextComponent: React.FC<TextComponentProps> = ({
-  fontSize = '2rem',
+  fontSize = '2vw',
   position = {},
   text,
 }) => {

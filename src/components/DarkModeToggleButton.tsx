@@ -22,7 +22,7 @@ const DarkModeToggleButton: React.FC<DarkModeToggleButtonProps> = ({ isDarkModeB
 
   return (
       <IconButton color="inherit" onClick={toggleDarkMode} style={buttonStyle}>
-        <Brightness4Icon />
+        <Brightness4Icon style={{ fontSize: '2vw' }}/>
       </IconButton>
   );
 };

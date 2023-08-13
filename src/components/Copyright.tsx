@@ -10,14 +10,14 @@ const Copyright: React.FC = () => {
         left: '2%',
         display: 'flex',
         alignItems: 'center',
-        fontSize: '1rem',
+        fontSize: '1.2vw',
         color: useTheme().palette.secondary.main,
         fontFamily: 'Montserrat, sans-serif', 
     };
 
     return (
         <Box style={styles}>
-            <CopyrightIcon style={{ marginRight: '0.5rem' }} />
+            <CopyrightIcon style={{ fontSize: '1.2vw', marginRight: '0.5vw' }} />
             Grib
         </Box>
     );
