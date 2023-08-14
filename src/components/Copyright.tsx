@@ -11,7 +11,7 @@ const Copyright: React.FC = () => {
         display: 'flex',
         alignItems: 'center',
         fontSize: '1.2vw',
-        color: useTheme().palette.secondary.main,
+        color: useTheme().palette.text.primary,
     };
 
     return (

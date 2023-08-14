@@ -11,6 +11,7 @@ import LogoBox from '../components/LogoBox';
 import TextComponent from '../components/TextComponent';
 import FilledButton from '../components/FilledButton';
 import OutlinedButton from '../components/OutlinedButton';
+import Loading from '../components/Loading';
 
 const LoginPage: React.FC = () => {
     const { darkMode, toggleDarkMode } = useDarkMode();
@@ -23,8 +24,6 @@ const LoginPage: React.FC = () => {
                 <BackgroundVideo />
                 <DarkModeToggleButton isDarkModeButtonTopRight={true} />
                 <Copyright />
-
-                {/* Restante do conteúdo do aplicativo */}
             </div>
         </ThemeProvider>
     );

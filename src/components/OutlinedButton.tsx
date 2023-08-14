@@ -3,6 +3,8 @@ import { Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 interface OutlinedButtonProps {
+  width?: string, 
+  height?: string, 
   position?: {
     top?: string;
     bottom?: string;
@@ -14,6 +16,8 @@ interface OutlinedButtonProps {
 }
 
 const OutlinedButton: React.FC<OutlinedButtonProps> = ({
+  width,
+  height,
   position = {},
   label,
 }) => {
@@ -26,11 +30,11 @@ const OutlinedButton: React.FC<OutlinedButtonProps> = ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '25%', 
-    height: '10%',
+    width,
+    height,
     borderRadius: '50px',
     fontWeight: 'bold',
-    fontSize: '1.8vw',
+    fontSize: '1.5vw',
     color: '#ffffff', 
     borderColor: useTheme().palette.primary.main, 
     borderWidth: '4px',

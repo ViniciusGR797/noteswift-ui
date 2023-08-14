@@ -3,7 +3,8 @@ import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 interface TextComponentProps {
-  fontSize?: string;
+  fontSize?: string;  
+  color?: string;
   position?: {
     top?: string;
     bottom?: string;
@@ -12,12 +13,15 @@ interface TextComponentProps {
     transform?: string;
   };
   text: string; // Texto a ser exibido
+  fontWeight?: string;
 }
 
 const TextComponent: React.FC<TextComponentProps> = ({
   fontSize = '2vw',
+  color,
   position = {},
   text,
+  fontWeight,
 }) => {
   const { transform, ...positionProps } = position;
 
@@ -30,7 +34,8 @@ const TextComponent: React.FC<TextComponentProps> = ({
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    color: useTheme().palette.secondary.main,
+    color,
+    fontWeight,
   };
 
   return (
