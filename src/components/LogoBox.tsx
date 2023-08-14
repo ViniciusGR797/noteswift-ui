@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import Logo from '../assets/Logo.png';
+import LogoShort from '../assets/LogoShort.png';
 
 interface LogoBoxProps {
   size?: string;
@@ -11,13 +12,15 @@ interface LogoBoxProps {
     right?: string;
     transform?: string;
   };
+  isShort?: boolean; // Adicione o parâmetro para verificar se é a logo curta
 }
 
 const LogoBox: React.FC<LogoBoxProps> = ({
   size = '100px',
   position = {},
+  isShort = false, // Defina o valor padrão como false
 }) => {
-    const currentLogoSource = Logo;
+  const currentLogoSource = isShort ? LogoShort : Logo; // Verifica se é a logo curta
 
   const { transform, ...positionProps } = position;
 
@@ -35,7 +38,7 @@ const LogoBox: React.FC<LogoBoxProps> = ({
   const imageStyles: React.CSSProperties = {
     maxWidth: '100%',
     maxHeight: '100%',
-    opacity:  0.8,
+    opacity: 0.8,
   };
 
   return (

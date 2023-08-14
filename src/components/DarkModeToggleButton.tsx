@@ -12,7 +12,7 @@ const DarkModeToggleButton: React.FC<DarkModeToggleButtonProps> = ({ isDarkModeB
   const { toggleDarkMode } = useDarkMode();
 
   const buttonStyle: React.CSSProperties = {
-    color: useTheme().palette.secondary.main,
+    color: useTheme().palette.text.primary,
     position: 'fixed',
     bottom: isDarkModeButtonTopRight ? 'auto' : '2%',
     top: isDarkModeButtonTopRight ? '2%' : 'auto',
