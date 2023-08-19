@@ -1,10 +1,10 @@
-import React from 'react';
-import { Button } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Button, Skeleton, Theme, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 interface OutlinedButtonProps {
-  width?: string, 
-  height?: string, 
+  width?: string,
+  height?: string,
   position?: {
     top?: string;
     bottom?: string;
@@ -21,7 +21,24 @@ const OutlinedButton: React.FC<OutlinedButtonProps> = ({
   position = {},
   label,
 }) => {
-  const { transform, ...positionProps } = position;
+  const theme = useTheme();
+  const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+
+  const screenPosition = position ? JSON.parse(JSON.stringify(position)) : {};
+
+  const font = smDown ? '1rem' : mdDown ? '1.1rem' : '1.2rem';
+  screenPosition.bottom = smDown ? '12%' : position.bottom;
+  screenPosition.left = smDown ? '50%' : position.left;
+  screenPosition.transform = smDown ? 'translate(-50%, -50%)' : 'translate(0, 0)';
+  const screenWidth = smDown ? '35%' : width;
+
+  const { transform, ...positionProps } = screenPosition;
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsDataLoaded(true);
+  }, []);
 
   const buttonStyles: React.CSSProperties = {
     position: 'absolute',
@@ -30,21 +47,45 @@ const OutlinedButton: React.FC<OutlinedButtonProps> = ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width,
+    width: screenWidth,
     height,
     borderRadius: '50px',
     fontWeight: 'bold',
-    fontSize: '1.5vw',
-    color: '#ffffff', 
-    borderColor: useTheme().palette.primary.main, 
+    fontSize: font,
+    color: '#ffffff',
+    borderColor: theme.palette.primary.main,
     borderWidth: '4px',
   };
 
+  const skeletonStyles: React.CSSProperties = {
+    position: 'absolute',
+    ...positionProps,
+    transform,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: screenWidth,
+    height,
+    borderRadius: '50px',
+  };
+
   return (
-    <Button variant="outlined" style={buttonStyles}>
-      {label}
-    </Button>
+    <Box>
+      {isDataLoaded ? (
+        <>
+          <Button variant="outlined" style={buttonStyles}>
+            {label}
+          </Button>
+        </>
+      ) : (
+        <>
+          <Skeleton variant="rectangular" width={100} height={50} style={skeletonStyles} />
+        </>
+      )}
+    </Box>
   );
+
+
 };
 
 export default OutlinedButton;

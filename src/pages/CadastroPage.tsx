@@ -33,7 +33,7 @@ const CadastroPage: React.FC = () => {
                 <Link to="/">
                     <LogoBox size="7%" position={{ top: '8%', left: '50%', transform: 'translateX(-50%)' }} isShort={true} />
                 </Link>
-                <TextComponent fontSize='2.2vw' color={currentTheme.palette.text.secondary} position={{ top: '25%', left: '42%', transform: 'translateX(-50%)' }} text="Cadastro" fontWeight='bold' />
+                <TextComponent fontSize='2.2vw' color={currentTheme.palette.text.secondary} position={{ top: '25%', left: '42.5%', transform: 'translateX(-50%)' }} text="Cadastro" fontWeight='bold' />
                 <TextFieldIcon label="Nome" icon={<Person />} position={{ top: '36%', left: '50%', transform: 'translate(-50%, -50%)' }} />
                 <TextFieldIcon label="Email" icon={<Mail />} position={{ top: '48%', left: '50%', transform: 'translate(-50%, -50%)' }} />
                 <TextFieldIcon label="Senha" icon={<Lock />} type='password' position={{ top: '60%', left: '50%', transform: 'translate(-50%, -50%)' }} />

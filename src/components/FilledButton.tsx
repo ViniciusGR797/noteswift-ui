@@ -1,9 +1,9 @@
-import React from 'react';
-import { Button } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Button, Skeleton, Theme, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 interface FilledButtonProps {
-  width?: string, 
+  width?: string,
   height?: string,
   position?: {
     top?: string;
@@ -16,12 +16,29 @@ interface FilledButtonProps {
 }
 
 const FilledButton: React.FC<FilledButtonProps> = ({
-  width, 
+  width,
   height,
   position = {},
   label,
 }) => {
-  const { transform, ...positionProps } = position;
+  const theme = useTheme();
+  const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+
+  const screenPosition = position ? JSON.parse(JSON.stringify(position)) : {};
+
+  const font = smDown ? '1rem' : mdDown ? '1.1rem' : '1.2rem';
+  screenPosition.bottom = smDown ? '25%' : position.bottom;
+  screenPosition.left = smDown ? '50%' : position.left;
+  screenPosition.transform = smDown ? 'translate(-50%, -50%)' : 'translate(0, 0)';
+  const screenWidth = smDown ? '35%' : width;
+
+  const { transform, ...positionProps } = screenPosition;
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsDataLoaded(true);
+  }, []);
 
   const buttonStyles: React.CSSProperties = {
     position: 'absolute',
@@ -30,19 +47,41 @@ const FilledButton: React.FC<FilledButtonProps> = ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width,
+    width: screenWidth,
     height,
     borderRadius: '50px',
     fontWeight: 'bold',
-    fontSize: '1.5vw',
-    color: '#ffffff', 
-    backgroundColor: useTheme().palette.primary.main, 
+    fontSize: font,
+    color: '#ffffff',
+    backgroundColor: theme.palette.primary.main,
+  };
+
+  const skeletonStyles: React.CSSProperties = {
+    position: 'absolute',
+    ...positionProps,
+    transform,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: screenWidth,
+    height,
+    borderRadius: '50px',
   };
 
   return (
-    <Button variant="contained" style={buttonStyles}>
-      {label}
-    </Button>
+    <Box>
+      {isDataLoaded ? (
+        <>
+          <Button variant="contained" style={buttonStyles}>
+            {label}
+          </Button>
+        </>
+      ) : (
+        <>
+          <Skeleton variant="rectangular" width={100} height={50} style={skeletonStyles} />
+        </>
+      )}
+    </Box>
   );
 };
 
