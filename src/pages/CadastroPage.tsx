@@ -27,7 +27,7 @@ const CadastroPage: React.FC = () => {
             <CssBaseline />
             <div>
                 <BackgroundVideo />
-                <DarkModeToggleButton isDarkModeButtonTopRight={true} />
+                {/* <DarkModeToggleButton isDarkModeButtonTopRight={true} />
                 <Copyright />
                 <FilledRectangle width='40%' height='90%' backgroundColor={currentTheme.palette.secondary.main} opacity={0.85} position={{ top: '5%', left: '50%', transform: 'translateX(-50%)' }} />
                 <Link to="/">
@@ -43,7 +43,7 @@ const CadastroPage: React.FC = () => {
                 <TextComponent fontSize='1.2vw' color={currentTheme.palette.text.secondary} position={{ top: '82%', left: '44%', transform: 'translateX(-50%)' }} text="Já possui uma conta?" />
                 <Link to="/login">
                     <TextComponent fontSize='1.2vw' color={currentTheme.palette.primary.main} position={{ top: '82%', left: '59%', transform: 'translateX(-50%)' }} text="Faça Login" fontWeight='bold' />
-                </Link>
+                </Link> */}
             </div>
         </ThemeProvider>
     );

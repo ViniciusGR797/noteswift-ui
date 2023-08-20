@@ -28,7 +28,7 @@ const DashboardPage: React.FC = () => {
             <CssBaseline />
             <div>
                 
-                <FilledRectangle width='20%' height='96%' backgroundColor={currentTheme.palette.background.paper} opacity={1} position={{ top: '2%', left: '11%', transform: 'translateX(-50%)' }} />
+                {/* <FilledRectangle width='20%' height='96%' backgroundColor={currentTheme.palette.background.paper} opacity={1} position={{ top: '2%', left: '11%', transform: 'translateX(-50%)' }} />
                 <OutlineRectangle width='77%' height='81%' borderColor={currentTheme.palette.primary.main} position={{ top: '17%', left: '60.5%', transform: 'translateX(-50%)' }} />
                 <Profile name='Vinicius' />
 
@@ -37,7 +37,7 @@ const DashboardPage: React.FC = () => {
                 
                 <Link to="/">
                     <LogoBox size="30%" position={{ top: '5%', left: '37%', transform: 'translateX(-50%)' }} isShort={false} />
-                </Link>
+                </Link> */}
 
 
 

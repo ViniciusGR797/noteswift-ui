@@ -32,6 +32,11 @@ const DarkModeToggleButton: React.FC<DarkModeToggleButtonProps> = ({ isDarkModeB
     left: isDarkModeButtonTopRight ? 'auto' : '2%',
   };
 
+  const skeletonStyles: React.CSSProperties = {
+    width: fontSize,
+    height: fontSize,
+  };
+
   return (
     <IconButton color="inherit" onClick={toggleDarkMode} style={buttonStyle}>
 
@@ -41,7 +46,7 @@ const DarkModeToggleButton: React.FC<DarkModeToggleButtonProps> = ({ isDarkModeB
         </>
       ) : (
         <>
-          <Skeleton variant="circular" width={fontSize} height={fontSize} />
+          <Skeleton variant="circular" style={skeletonStyles} />
         </>
       )}
     </IconButton>

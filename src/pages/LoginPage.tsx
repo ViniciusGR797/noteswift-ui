@@ -25,7 +25,7 @@ const LoginPage: React.FC = () => {
         <ThemeProvider theme={currentTheme}>
             <CssBaseline />
             <div>
-                <BackgroundVideo />
+                {/* <BackgroundVideo />
                 <DarkModeToggleButton isDarkModeButtonTopRight={true} />
                 <Copyright />
 
@@ -42,7 +42,7 @@ const LoginPage: React.FC = () => {
                 <TextComponent fontSize='1.2vw' color={currentTheme.palette.text.secondary} position={{ top: '82%', left: '42%', transform: 'translateX(-50%)' }} text="Novo por aqui?" />
                 <Link to="/register">
                     <TextComponent fontSize='1.2vw' color={currentTheme.palette.primary.main} position={{ top: '82%', left: '58%', transform: 'translateX(-50%)' }} text="Crie uma conta" fontWeight='bold' />
-                </Link>
+                </Link> */}
             </div>
         </ThemeProvider>
     );

@@ -3,22 +3,46 @@ import { Box, Button, Skeleton, Theme, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 interface FilledButtonProps {
-  width?: string,
-  height?: string,
-  position?: {
-    top?: string;
-    bottom?: string;
-    left?: string;
-    right?: string;
-    transform?: string;
+  width?: {
+    sm?: string;
+    md?: string;
   };
-  label: string; // Texto do botão
+  height?: string;
+  position?: {
+    top?: {
+      sm?: string;
+      md?: string;
+    },
+    bottom?: {
+      sm?: string;
+      md?: string;
+    },
+    left?: {
+      sm?: string;
+      md?: string;
+    },
+    right?: {
+      sm?: string;
+      md?: string;
+    },
+    transform?: {
+      sm?: string;
+      md?: string;
+    };
+  };
+  fontSize?: {
+    sm?: string;
+    md?: string;
+    lg?: string;
+  };
+  label: string; 
 }
 
 const FilledButton: React.FC<FilledButtonProps> = ({
-  width,
+  width = {},
   height,
   position = {},
+  fontSize = {},
   label,
 }) => {
   const theme = useTheme();
@@ -27,11 +51,13 @@ const FilledButton: React.FC<FilledButtonProps> = ({
 
   const screenPosition = position ? JSON.parse(JSON.stringify(position)) : {};
 
-  const font = smDown ? '1rem' : mdDown ? '1.1rem' : '1.2rem';
-  screenPosition.bottom = smDown ? '25%' : position.bottom;
-  screenPosition.left = smDown ? '50%' : position.left;
-  screenPosition.transform = smDown ? 'translate(-50%, -50%)' : 'translate(0, 0)';
-  const screenWidth = smDown ? '35%' : width;
+  const font = smDown ? fontSize.sm : mdDown ? fontSize.md : fontSize.lg;
+  screenPosition.top = smDown ? position.top?.sm : position.top?.md;
+  screenPosition.bottom = smDown ? position.bottom?.sm : position.bottom?.md;
+  screenPosition.left = smDown ? position.left?.sm : position.left?.md;
+  screenPosition.right = smDown ? position.right?.sm : position.right?.md;
+  screenPosition.transform = smDown ? position.transform?.sm : position.transform?.md;
+  const screenWidth = smDown ? width.sm : width.md;
 
   const { transform, ...positionProps } = screenPosition;
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -78,7 +104,7 @@ const FilledButton: React.FC<FilledButtonProps> = ({
         </>
       ) : (
         <>
-          <Skeleton variant="rectangular" width={100} height={50} style={skeletonStyles} />
+          <Skeleton variant="rectangular" style={skeletonStyles} />
         </>
       )}
     </Box>
