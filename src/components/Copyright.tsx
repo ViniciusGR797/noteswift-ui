@@ -16,8 +16,10 @@ const Copyright: React.FC = () => {
     const [isDataLoaded, setIsDataLoaded] = useState(false);
 
     useEffect(() => {
-        setIsDataLoaded(true);
-    }, []);
+        setTimeout(() => {
+          setIsDataLoaded(true);
+        }, 800);
+      }, []);
 
     const styles: React.CSSProperties = {
         position: 'fixed',

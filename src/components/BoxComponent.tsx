@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Box, Theme, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-interface FilledRectangleProps {
+interface BoxComponentProps {
   position?: {
     top?: {
       sm?: string;
@@ -35,16 +35,16 @@ interface FilledRectangleProps {
     md?: string;
     lg?: string;
   };
-  backgroundColor?: string;
-  opacity?: number;
+  isCenter?: boolean;
+  children: ReactNode;
 }
 
-const FilledRectangle: React.FC<FilledRectangleProps> = ({
+const BoxComponent: React.FC<BoxComponentProps> = ({
   position = {},
   width = {},
   height = {},
-  backgroundColor,
-  opacity = 1,
+  isCenter = false,
+  children,
 }) => {
   const theme = useTheme();
   const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
@@ -61,30 +61,29 @@ const FilledRectangle: React.FC<FilledRectangleProps> = ({
   const screenHeight = smDown ? height.sm : mdDown ? height.md : height.lg;
 
   const { transform, ...positionProps } = screenPosition;
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
-  useEffect(() => {
-    setIsDataLoaded(true);
-  }, []);
-
-  const rectangleStyles: React.CSSProperties = {
+  const boxStylesBase: React.CSSProperties = {
+    width: screenWidth,
+    height: screenHeight,
     position: 'absolute',
     ...positionProps,
+  };
+  
+  const boxStylesCentered: React.CSSProperties = {
     transform,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: screenWidth,
-    height: screenHeight,
-    borderRadius: '50px',
-    backgroundColor,
-    opacity,
+    textAlign: 'center',
   };
+  
+  const boxStyles = isCenter ? { ...boxStylesBase, ...boxStylesCentered } : boxStylesBase;
 
   return (
-    <Box style={rectangleStyles}>
+    <Box style={boxStyles}>
+        {children}
     </Box>
   );
 };
 
-export default FilledRectangle;
+export default BoxComponent;

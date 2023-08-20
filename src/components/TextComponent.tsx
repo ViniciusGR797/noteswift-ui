@@ -8,6 +8,11 @@ interface TextComponentProps {
     md?: string;
     lg?: string;
   };
+  width?: {
+    sm?: string;
+    md?: string;
+    lg?: string;
+  };
   color?: string;
   position?: {
     top?: {
@@ -33,14 +38,19 @@ interface TextComponentProps {
   };
   text: string;
   fontWeight?: string;
+  textAlign?: string;
+  isCenter?: boolean;
 }
 
 const TextComponent: React.FC<TextComponentProps> = ({
   fontSize = {},
+  width = {},
   color,
   position = {},
   text,
   fontWeight,
+  textAlign,
+  isCenter = false,
 }) => {
   const theme = useTheme();
   const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
@@ -54,44 +64,53 @@ const TextComponent: React.FC<TextComponentProps> = ({
   screenPosition.left = smDown ? position.left?.sm : position.left?.md;
   screenPosition.right = smDown ? position.right?.sm : position.right?.md;
   screenPosition.transform = smDown ? position.transform?.sm : position.transform?.md;
-  const marginTop = smDown ? '0.2rem' : mdDown ? '0.3rem' : '0.8rem';
-  const widthSkeleton = smDown ? '72%' : mdDown ? '62%' : '52%';
+  const screenWidth = smDown ? width.sm : mdDown ? width.md : width.lg;
 
   const { transform, ...positionProps } = screenPosition;
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   useEffect(() => {
-    setIsDataLoaded(true);
+    setTimeout(() => {
+      setIsDataLoaded(true);
+    }, 800);
   }, []);
 
-  const textStyles: React.CSSProperties = {
+  const textStylesBase: React.CSSProperties = {
     fontSize: font,
-    position: 'absolute',
-    ...positionProps,
-    transform,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
     color,
     fontWeight,
-    width: '80%',
-  };
-
-  const skeletonStyles: React.CSSProperties = {
-    fontSize: font,
+    width: screenWidth,
     position: 'absolute',
     ...positionProps,
+    textAlign,
+  };
+
+  // const textStylesOverFlow: React.CSSProperties = {
+  //   whiteSpace: 'nowrap',
+  //   textOverflow: 'ellipsis',
+  //   overflow: 'hidden',
+  // };
+  
+  const textStylesCentered: React.CSSProperties = {
     transform,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    textAlign: 'center',
-    fontWeight,
-    width: widthSkeleton,
-    height: font,
-    marginTop: marginTop,
   };
+  
+  const textStyles = isCenter ? { ...textStylesBase, ...textStylesCentered } : textStylesBase;
+  
+  const skeletonStylesBase: React.CSSProperties = {
+    fontSize: font,
+    color,
+    fontWeight,
+    width: screenWidth,
+    position: 'absolute',
+    ...positionProps,
+    textAlign,
+  };
+
+  const skeletonStyles = isCenter ? { ...skeletonStylesBase, ...textStylesCentered } : skeletonStylesBase;
 
   return (
     <Box>

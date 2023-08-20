@@ -63,7 +63,9 @@ const FilledButton: React.FC<FilledButtonProps> = ({
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   useEffect(() => {
-    setIsDataLoaded(true);
+    setTimeout(() => {
+      setIsDataLoaded(true);
+    }, 800);
   }, []);
 
   const buttonStyles: React.CSSProperties = {

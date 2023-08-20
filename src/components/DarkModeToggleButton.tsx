@@ -20,7 +20,9 @@ const DarkModeToggleButton: React.FC<DarkModeToggleButtonProps> = ({ isDarkModeB
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   useEffect(() => {
-    setIsDataLoaded(true);
+    setTimeout(() => {
+      setIsDataLoaded(true);
+    }, 800);
   }, []);
 
   const buttonStyle: React.CSSProperties = {

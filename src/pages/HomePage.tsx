@@ -52,6 +52,7 @@ const HomePage: React.FC = () => {
                 />
                 <TextComponent
                     fontSize={{ sm: '1.2rem', md: '1.5rem', lg: '2rem' }}
+                    width={{ sm: '70%', md: '70%', lg: '70%' }}
                     color={currentTheme.palette.text.primary}
                     position={{
                         top: { sm: '40%', md: '45%' },
@@ -59,6 +60,8 @@ const HomePage: React.FC = () => {
                         transform: { sm: 'translateX(-50%)', md: 'translateX(-50%)' }
                     }}
                     text="O poder das anotações ao seu alcance"
+                    isCenter={true}
+                    textAlign='center'
                 />
                 <Link to="/login">
                     <FilledButton

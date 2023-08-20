@@ -66,7 +66,9 @@ const LogoBox: React.FC<LogoBoxProps> = ({
   const currentLogoSource = isShort ? LogoShort : Logo;
 
   useEffect(() => {
-    setIsDataLoaded(true);
+    setTimeout(() => {
+      setIsDataLoaded(true);
+    }, 800);
   }, []);
 
   const logoStyles: React.CSSProperties = {
