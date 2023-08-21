@@ -22,6 +22,53 @@ const LoginPage: React.FC = () => {
     const { darkMode, toggleDarkMode } = useDarkMode();
     const currentTheme = darkMode ? darkTheme : lightTheme;
 
+
+
+    const [inputValues, setInputValues] = useState({
+        email: '',
+        password: '',
+    });
+
+    const [errors, setErrors] = useState({
+        email: '',
+        password: '',
+    });
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setInputValues((prevValues) => ({
+            ...prevValues,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = () => {
+        const newErrors = {
+            email: '',
+            password: '',
+        };
+
+        if (!inputValues.email) {
+            newErrors.email = 'O campo obrigatório';
+        } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(inputValues.email)) {
+            newErrors.email = 'Email inválido';
+        }
+
+        if (!inputValues.password) {
+            newErrors.password = 'O campo obrigatório';
+        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(inputValues.password)) {
+            newErrors.password = 'Senha deve conter 8+ caracteres com letras maiúsculas, minúsculas, números e caracteres especiais';
+        }
+
+        setErrors(newErrors);
+
+        if (!newErrors.email && !newErrors.password) {
+            // Execute a ação de envio aqui
+        }
+    };
+
+
+
     return (
         <ThemeProvider theme={currentTheme}>
             <CssBaseline />
@@ -32,7 +79,7 @@ const LoginPage: React.FC = () => {
 
                 <FilledRectangle
                     width={{ sm: '80%', md: '60%', lg: '40%' }}
-                    height={{ sm: '90%', md: '90%', lg: '90%' }}
+                    height='90%'
                     position={{
                         top: { sm: '5%', md: '5%' },
                         left: { sm: '50%', md: '50%' },
@@ -66,10 +113,10 @@ const LoginPage: React.FC = () => {
                             />
                         </Link>
 
-                        <Grid item xs={12}>
+                        <Grid item xs={4}>
                             <TextComponent
                                 fontSize={{ sm: '1.2rem', md: '1.5rem', lg: '1.6rem' }}
-                                width={{ sm: '100%', md: '100%', lg: '100%' }}
+                                width={{ sm: '33%', md: '33%', lg: '33%' }}
                                 color={currentTheme.palette.text.secondary}
                                 position={{
                                     top: { sm: '23%', md: '23.5%' }
@@ -79,8 +126,10 @@ const LoginPage: React.FC = () => {
                                 textAlign='left'
                             />
                         </Grid>
+                        <Grid item xs={8}></Grid>
 
                         <TextFieldIcon
+                            name='email'
                             label="Email"
                             icon={<Mail />}
                             position={{
@@ -91,8 +140,11 @@ const LoginPage: React.FC = () => {
                             fontSize={{ sm: '0.86rem', md: '0.86rem', lg: '1rem' }}
                             width={{ sm: '100%', md: '100%', lg: '100%' }}
                             height='11%'
+                            onChange={handleChange}
+                            helperText={errors.email}
                         />
                         <TextFieldIcon
+                            name='password'
                             label="Senha"
                             icon={<Lock />}
                             type='password'
@@ -104,21 +156,22 @@ const LoginPage: React.FC = () => {
                             fontSize={{ sm: '0.86rem', md: '0.86rem', lg: '1rem' }}
                             width={{ sm: '100%', md: '100%', lg: '100%' }}
                             height='11%'
+                            onChange={handleChange}
+                            helperText={errors.password}
                         />
 
-                        <Link to="/dashboard">
-                            <FilledButton
-                                width={{ sm: '100%', md: '100%' }}
-                                height='10.5%'
-                                position={{
-                                    top: { sm: '80%', md: '80%' },
-                                    left: { sm: '50%', md: '50%' },
-                                    transform: { sm: 'translate(-50%, -50%)', md: 'translate(-50%, -50%)' }
-                                }}
-                                fontSize={{ sm: '1rem', md: '1.1rem', lg: '1.2rem' }}
-                                label="Entrar"
-                            />
-                        </Link>
+                        <FilledButton
+                            width={{ sm: '100%', md: '100%' }}
+                            height='10.5%'
+                            position={{
+                                top: { sm: '80%', md: '80%' },
+                                left: { sm: '50%', md: '50%' },
+                                transform: { sm: 'translate(-50%, -50%)', md: 'translate(-50%, -50%)' }
+                            }}
+                            fontSize={{ sm: '1rem', md: '1.1rem', lg: '1.2rem' }}
+                            label="Entrar"
+                            onClick={handleSubmit}
+                        />
 
                         <Grid item xs={5}>
                             <TextComponent
@@ -132,11 +185,7 @@ const LoginPage: React.FC = () => {
                                 textAlign='left'
                             />
                         </Grid>
-
-                        <Grid item xs={2}>
-
-                        </Grid>
-
+                        <Grid item xs={2}></Grid>
                         <Grid item xs={5}>
                             <Link to="/register">
                                 <TextComponent

@@ -44,7 +44,7 @@ const LogoBox: React.FC<LogoBoxProps> = ({
   size = {},
   height = {},
   position = {},
-  isShort = false, // Defina o valor padrão como false
+  isShort = false, 
 }) => {
   const theme = useTheme();
   const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));

@@ -67,6 +67,7 @@ const BoxComponent: React.FC<BoxComponentProps> = ({
     height: screenHeight,
     position: 'absolute',
     ...positionProps,
+    // background: '#008000',
   };
   
   const boxStylesCentered: React.CSSProperties = {

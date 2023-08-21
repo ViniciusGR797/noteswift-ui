@@ -36,6 +36,7 @@ interface FilledButtonProps {
     lg?: string;
   };
   label: string; 
+  onClick?: () => void;
 }
 
 const FilledButton: React.FC<FilledButtonProps> = ({
@@ -44,6 +45,7 @@ const FilledButton: React.FC<FilledButtonProps> = ({
   position = {},
   fontSize = {},
   label,
+  onClick,
 }) => {
   const theme = useTheme();
   const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
@@ -100,7 +102,7 @@ const FilledButton: React.FC<FilledButtonProps> = ({
     <Box>
       {isDataLoaded ? (
         <>
-          <Button variant="contained" style={buttonStyles}>
+          <Button variant="contained" onClick={onClick} style={buttonStyles}>
             {label}
           </Button>
         </>

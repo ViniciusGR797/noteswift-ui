@@ -31,7 +31,7 @@ const DarkModeToggleButton: React.FC<DarkModeToggleButtonProps> = ({ isDarkModeB
     bottom: isDarkModeButtonTopRight ? 'auto' : '12%',
     top: isDarkModeButtonTopRight ? '2%' : 'auto',
     right: isDarkModeButtonTopRight ? '2%' : 'auto',
-    left: isDarkModeButtonTopRight ? 'auto' : '2%',
+    left: isDarkModeButtonTopRight ? 'auto' : '1.5%',
   };
 
   const skeletonStyles: React.CSSProperties = {

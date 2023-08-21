@@ -40,6 +40,7 @@ interface TextComponentProps {
   fontWeight?: string;
   textAlign?: string;
   isCenter?: boolean;
+  helperText?: string;
 }
 
 const TextComponent: React.FC<TextComponentProps> = ({
@@ -84,12 +85,6 @@ const TextComponent: React.FC<TextComponentProps> = ({
     ...positionProps,
     textAlign,
   };
-
-  // const textStylesOverFlow: React.CSSProperties = {
-  //   whiteSpace: 'nowrap',
-  //   textOverflow: 'ellipsis',
-  //   overflow: 'hidden',
-  // };
   
   const textStylesCentered: React.CSSProperties = {
     transform,

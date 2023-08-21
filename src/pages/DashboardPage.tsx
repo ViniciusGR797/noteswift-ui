@@ -27,15 +27,48 @@ const DashboardPage: React.FC = () => {
         <ThemeProvider theme={currentTheme}>
             <CssBaseline />
             <div>
-                
-                {/* <FilledRectangle width='20%' height='96%' backgroundColor={currentTheme.palette.background.paper} opacity={1} position={{ top: '2%', left: '11%', transform: 'translateX(-50%)' }} />
-                <OutlineRectangle width='77%' height='81%' borderColor={currentTheme.palette.primary.main} position={{ top: '17%', left: '60.5%', transform: 'translateX(-50%)' }} />
+
+                <FilledRectangle
+                    width={{ sm: '12%', md: '20%', lg: '20%' }}
+                    height='96%'
+                    position={{
+                        top: { sm: '2%', md: '2%' },
+                        left: { sm: '7%', md: '11%' },
+                        transform: { sm: 'translateX(-50%)', md: 'translateX(-50%)' }
+                    }}
+                    backgroundColor={currentTheme.palette.background.paper}
+                    opacity={1}
+                />
+
+                <OutlineRectangle
+                    width={{ sm: '84%', md: '77%', lg: '77%' }}
+                    height='81%'
+                    position={{
+                        top: { sm: '17%', md: '17%' },
+                        left: { sm: '57%', md: '60.5%' },
+                        transform: { sm: 'translateX(-50%)', md: 'translateX(-50%)' }
+                    }}
+                    borderColor={currentTheme.palette.primary.main}
+                />
+
                 <Profile name='Vinicius' />
 
-
                 <DarkModeToggleButton isDarkModeButtonTopRight={false} />
-                
+
                 <Link to="/">
+                    <LogoBox
+                        size={{ sm: '55%', md: '30%', lg: '30%' }}
+                        height={{ sm: '8%', md: '6%', lg: '8%' }}
+                        position={{
+                            top: { sm: '6%', md: '5%' },
+                            left: { sm: '50%', md: '37%' },
+                            transform: { sm: 'translateX(-50%)', md: 'translateX(-50%)' }
+                        }}
+                    />
+                </Link>
+
+
+                {/*<Link to="/">
                     <LogoBox size="30%" position={{ top: '5%', left: '37%', transform: 'translateX(-50%)' }} isShort={false} />
                 </Link> */}
 

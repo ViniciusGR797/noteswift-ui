@@ -30,11 +30,7 @@ interface FilledRectangleProps {
     md?: string;
     lg?: string;
   };
-  height?: {
-    sm?: string;
-    md?: string;
-    lg?: string;
-  };
+  height?: string;
   backgroundColor?: string;
   opacity?: number;
 }
@@ -42,7 +38,7 @@ interface FilledRectangleProps {
 const FilledRectangle: React.FC<FilledRectangleProps> = ({
   position = {},
   width = {},
-  height = {},
+  height,
   backgroundColor,
   opacity = 1,
 }) => {
@@ -58,15 +54,9 @@ const FilledRectangle: React.FC<FilledRectangleProps> = ({
   screenPosition.right = smDown ? position.right?.sm : position.right?.md;
   screenPosition.transform = smDown ? position.transform?.sm : position.transform?.md;
   const screenWidth = smDown ? width.sm : mdDown ? width.md : width.lg;
-  const screenHeight = smDown ? height.sm : mdDown ? height.md : height.lg;
 
   const { transform, ...positionProps } = screenPosition;
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
-
-  useEffect(() => {
-    setIsDataLoaded(true);
-  }, []);
-
+ 
   const rectangleStyles: React.CSSProperties = {
     position: 'absolute',
     ...positionProps,
@@ -75,8 +65,8 @@ const FilledRectangle: React.FC<FilledRectangleProps> = ({
     alignItems: 'center',
     justifyContent: 'center',
     width: screenWidth,
-    height: screenHeight,
-    borderRadius: '50px',
+    height,
+    borderRadius: '30px',
     backgroundColor,
     opacity,
   };

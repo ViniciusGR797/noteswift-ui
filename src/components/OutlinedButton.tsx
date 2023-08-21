@@ -36,6 +36,7 @@ interface OutlinedButtonProps {
     lg?: string;
   };
   label: string; 
+  onClick?: () => void;
 }
 
 const OutlinedButton: React.FC<OutlinedButtonProps> = ({
@@ -44,6 +45,7 @@ const OutlinedButton: React.FC<OutlinedButtonProps> = ({
   position = {},
   fontSize = {},
   label,
+  onClick,
 }) => {
   const theme = useTheme();
   const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
@@ -101,7 +103,7 @@ const OutlinedButton: React.FC<OutlinedButtonProps> = ({
     <Box>
       {isDataLoaded ? (
         <>
-          <Button variant="outlined" style={buttonStyles}>
+          <Button variant="outlined" onClick={onClick} style={buttonStyles}>
             {label}
           </Button>
         </>

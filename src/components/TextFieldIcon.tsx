@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TextField, InputAdornment, useMediaQuery, Theme, Box, Skeleton } from '@mui/material';
+import { TextField, InputAdornment, useMediaQuery, Theme, Box, Skeleton, FormHelperText, Tooltip } from '@mui/material';
 import { InputAdornmentProps } from '@mui/material/InputAdornment';
 import { useTheme } from '@mui/material/styles';
 
@@ -16,9 +16,6 @@ interface TextFieldIconProps {
   };
   height?: string;
   label?: string;
-  type?: string;
-  icon?: React.ReactElement<InputAdornmentProps['children']>; // Correção na definição do ícone
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   position?: {
     top?: {
       sm?: string;
@@ -41,6 +38,11 @@ interface TextFieldIconProps {
       md?: string;
     };
   };
+  name?: string;
+  helperText?: string;
+  type?: string;
+  icon?: React.ReactElement<InputAdornmentProps['children']>;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const TextFieldIcon: React.FC<TextFieldIconProps> = ({
@@ -52,6 +54,8 @@ const TextFieldIcon: React.FC<TextFieldIconProps> = ({
   icon,
   onChange,
   position = {},
+  helperText,
+  name,
 }) => {
   const theme = useTheme();
   const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
@@ -76,6 +80,12 @@ const TextFieldIcon: React.FC<TextFieldIconProps> = ({
     }, 800);
   }, []);
 
+  const helperTextStyles: React.CSSProperties = {
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+  };
+
   const textFieldStyles: React.CSSProperties = {
     position: 'absolute',
     ...positionProps,
@@ -96,22 +106,31 @@ const TextFieldIcon: React.FC<TextFieldIconProps> = ({
     <Box>
       {isDataLoaded ? (
         <>
-          <TextField
-            required
-            label={label}
-            variant='outlined'
-            type={type}
-            onChange={onChange}
-            style={textFieldStyles}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  {icon}
-                </InputAdornment>
-              ),
-              style: { fontSize: font },
-            }}
-          />
+          <Tooltip title={helperText}>
+            <TextField
+              required
+              name={name}
+              label={label}
+              variant='outlined'
+              type={type}
+              onChange={onChange}
+              error={!!helperText}
+              helperText={
+                <FormHelperText sx={helperTextStyles}>
+                  {helperText}
+                </FormHelperText>
+              }
+              style={textFieldStyles}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    {icon}
+                  </InputAdornment>
+                ),
+                style: { fontSize: font },
+              }}
+            />
+          </Tooltip>
         </>
       ) : (
         <>
