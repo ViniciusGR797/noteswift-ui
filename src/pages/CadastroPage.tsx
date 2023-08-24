@@ -13,15 +13,73 @@ import FilledButton from '../components/FilledButton';
 import OutlinedButton from '../components/OutlinedButton';
 import FilledRectangle from '../components/FilledRectangle';
 import { useTheme } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TextFieldIcon from '../components/TextFieldIcon';
 import { Mail, Person, Lock } from '@mui/icons-material';
 import Loading from '../components/Loading';
 import BoxComponent from '../components/BoxComponent';
+import { useUserCreated } from '../contexts/UserCreatedContext';
 
 const CadastroPage: React.FC = () => {
+    const navigate = useNavigate();
+    const { userCreated, toggleUserCreated } = useUserCreated();
     const { darkMode, toggleDarkMode } = useDarkMode();
     const currentTheme = darkMode ? darkTheme : lightTheme;
+
+
+
+
+    const [inputValues, setInputValues] = useState({
+        name: '',
+        email: '',
+        password: '',
+    });
+
+    const [errors, setErrors] = useState({
+        name: '',
+        email: '',
+        password: '',
+    });
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setInputValues((prevValues) => ({
+            ...prevValues,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = () => {
+        const newErrors = {
+            name: '',
+            email: '',
+            password: '',
+        };
+
+        if (!inputValues.name) {
+            newErrors.name = 'Campo obrigatório';
+        }
+
+        if (!inputValues.email) {
+            newErrors.email = 'Campo obrigatório';
+        } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(inputValues.email)) {
+            newErrors.email = 'Email inválido';
+        }
+
+        if (!inputValues.password) {
+            newErrors.password = 'Campo obrigatório';
+        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(inputValues.password)) {
+            newErrors.password = 'Senha deve conter 8+ caracteres com letras maiúsculas, minúsculas, números e caracteres especiais';
+        }
+
+        setErrors(newErrors);
+
+        if (!newErrors.email && !newErrors.password) {
+            toggleUserCreated(true)
+
+            navigate('/login')
+        }
+    };
 
     return (
         <ThemeProvider theme={currentTheme}>
@@ -83,6 +141,7 @@ const CadastroPage: React.FC = () => {
                         <Grid item xs={7}></Grid>
 
                         <TextFieldIcon
+                            name='name'
                             label="Nome"
                             icon={<Mail />}
                             position={{
@@ -93,8 +152,11 @@ const CadastroPage: React.FC = () => {
                             fontSize={{ sm: '0.86rem', md: '0.86rem', lg: '1rem' }}
                             width={{ sm: '100%', md: '100%', lg: '100%' }}
                             height='11%'
+                            onChange={handleChange}
+                            helperText={errors.name}
                         />
                         <TextFieldIcon
+                            name='email'
                             label="Email"
                             icon={<Mail />}
                             position={{
@@ -105,8 +167,11 @@ const CadastroPage: React.FC = () => {
                             fontSize={{ sm: '0.86rem', md: '0.86rem', lg: '1rem' }}
                             width={{ sm: '100%', md: '100%', lg: '100%' }}
                             height='11%'
+                            onChange={handleChange}
+                            helperText={errors.email}
                         />
                         <TextFieldIcon
+                            name='password'
                             label="Senha"
                             icon={<Lock />}
                             type='password'
@@ -118,21 +183,22 @@ const CadastroPage: React.FC = () => {
                             fontSize={{ sm: '0.86rem', md: '0.86rem', lg: '1rem' }}
                             width={{ sm: '100%', md: '100%', lg: '100%' }}
                             height='11%'
+                            onChange={handleChange}
+                            helperText={errors.password}
                         />
 
-                        <Link to="/login">
-                            <FilledButton
-                                width={{ sm: '100%', md: '100%' }}
-                                height='10.5%'
-                                position={{
-                                    top: { sm: '82%', md: '82%' },
-                                    left: { sm: '50%', md: '50%' },
-                                    transform: { sm: 'translate(-50%, -50%)', md: 'translate(-50%, -50%)' }
-                                }}
-                                fontSize={{ sm: '1rem', md: '1.1rem', lg: '1.2rem' }}
-                                label="Criar"
-                            />
-                        </Link>   
+                        <FilledButton
+                            width={{ sm: '100%', md: '100%' }}
+                            height='10.5%'
+                            position={{
+                                top: { sm: '82%', md: '82%' },
+                                left: { sm: '50%', md: '50%' },
+                                transform: { sm: 'translate(-50%, -50%)', md: 'translate(-50%, -50%)' }
+                            }}
+                            fontSize={{ sm: '1rem', md: '1.1rem', lg: '1.2rem' }}
+                            label="Criar"
+                            onClick={handleSubmit}
+                        />
 
                         <Grid item xs={7}>
                             <TextComponent

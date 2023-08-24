@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { DarkModeProvider } from './contexts/DarkModeContext';
+import { UserCreatedProvider } from './contexts/UserCreatedContext';
+import { UserLoginProvider } from './contexts/UserLoginContext';
 
 const container = document.getElementById('root');
 if (container) {
@@ -12,7 +14,11 @@ if (container) {
     <React.StrictMode>
       <Router>
         <DarkModeProvider>
-          <App />
+          <UserCreatedProvider>
+            <UserLoginProvider>
+              <App />
+            </UserLoginProvider>
+          </UserCreatedProvider>
         </DarkModeProvider>
       </Router>
     </React.StrictMode>

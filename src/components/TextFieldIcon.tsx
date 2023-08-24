@@ -128,6 +128,7 @@ const TextFieldIcon: React.FC<TextFieldIconProps> = ({
                   </InputAdornment>
                 ),
                 style: { fontSize: font },
+                inputProps: { maxLength: 254 }
               }}
             />
           </Tooltip>

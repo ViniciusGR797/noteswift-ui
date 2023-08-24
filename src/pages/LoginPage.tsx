@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 import BackgroundVideo from '../components/BackgroundVideo';
 import DarkModeToggleButton from '../components/DarkModeToggleButton'; // Importe o componente
 import { useDarkMode } from '../contexts/DarkModeContext';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { lightTheme, darkTheme } from '../themes/themes';
-import { Box, Button, Grid, Theme } from '@mui/material';
+import { Alert, AlertColor, Box, Button, Grid, Snackbar, Theme } from '@mui/material';
 import Copyright from '../components/Copyright';
 import LogoBox from '../components/LogoBox';
 import TextComponent from '../components/TextComponent';
@@ -13,16 +13,21 @@ import FilledButton from '../components/FilledButton';
 import OutlinedButton from '../components/OutlinedButton';
 import Loading from '../components/Loading';
 import FilledRectangle from '../components/FilledRectangle';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TextFieldIcon from '../components/TextFieldIcon';
 import { Person, Mail, Lock, AddBox } from '@mui/icons-material';
 import BoxComponent from '../components/BoxComponent';
+import UserService from '../services/userService';
+import NotificationSnackBar from '../components/NotificationSnackBar';
+import { useUserLogin } from '../contexts/UserLoginContext';
+import { useUserCreated } from '../contexts/UserCreatedContext';
 
 const LoginPage: React.FC = () => {
+    const navigate = useNavigate();
+    const { userCreated, toggleUserCreated } = useUserCreated();
+    const { userLogin, toggleUserLogin } = useUserLogin();
     const { darkMode, toggleDarkMode } = useDarkMode();
     const currentTheme = darkMode ? darkTheme : lightTheme;
-
-
 
     const [inputValues, setInputValues] = useState({
         email: '',
@@ -34,6 +39,25 @@ const LoginPage: React.FC = () => {
         password: '',
     });
 
+    const [snackBar, setSnackBar] = useState({
+        open: false,
+        borderColor: '',
+        severity: undefined as AlertColor | undefined,
+        message: '',
+    });
+
+    const handleClose = (event: any, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackBar({
+            open: false,
+            borderColor: snackBar.borderColor,
+            severity: snackBar.severity,
+            message: snackBar.message,
+        });
+    };
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setInputValues((prevValues) => ({
@@ -42,20 +66,20 @@ const LoginPage: React.FC = () => {
         }));
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const newErrors = {
             email: '',
             password: '',
         };
 
         if (!inputValues.email) {
-            newErrors.email = 'O campo obrigatório';
+            newErrors.email = 'Campo obrigatório';
         } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(inputValues.email)) {
             newErrors.email = 'Email inválido';
         }
 
         if (!inputValues.password) {
-            newErrors.password = 'O campo obrigatório';
+            newErrors.password = 'Campo obrigatório';
         } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(inputValues.password)) {
             newErrors.password = 'Senha deve conter 8+ caracteres com letras maiúsculas, minúsculas, números e caracteres especiais';
         }
@@ -63,10 +87,78 @@ const LoginPage: React.FC = () => {
         setErrors(newErrors);
 
         if (!newErrors.email && !newErrors.password) {
-            // Execute a ação de envio aqui
+            try {
+                const response = await UserService.loginUser(inputValues.email, inputValues.password);
+
+                if (!response) {
+                    setSnackBar({
+                        open: true,
+                        borderColor: 'red',
+                        severity: "error",
+                        message: "Erro ao consumir API",
+                    });
+
+                } else if (response.status === 200) {
+                    // Salvar token nos cookies
+                    // Aqui você deve ter uma função ou utilitário para salvar o token nos cookies
+                    // Exemplo: saveTokenToCookies(response.data.token);
+
+                    // Redirecionar para a rota "/dashboard"
+
+                    // setSnackBar({
+                    //     open: true,
+                    //     borderColor: 'green',
+                    //     severity: "success",
+                    //     message: "Logado com sucesso",
+                    // });
+
+                    toggleUserLogin(true);
+
+                    navigate('/dashboard')
+                } else {
+                    // Caso a resposta não seja 200, trate o erro de acordo com sua necessidade
+                    setSnackBar({
+                        open: true,
+                        borderColor: 'red',
+                        severity: "error",
+                        message: response.data.msg,
+                    });
+                }
+            } catch (error: any) {
+                setSnackBar({
+                    open: true,
+                    borderColor: 'red',
+                    severity: "error",
+                    message: "Erro ao realizar Login",
+                });
+            }
         }
+
+        // setSnackBar({
+        //     open: true,
+        //     borderColor: 'green',
+        //     severity: "success",
+        //     message: "Logado com sucesso",
+        // });
+
+        // setSnackBar({
+        //     open: true,
+        //     borderColor: 'red',
+        //     severity: "error",
+        //     message: "erro - externo",
+        // });
     };
 
+    useEffect(() => {
+        setSnackBar({
+            open: userCreated,
+            borderColor: 'green',
+            severity: "success",
+            message: "Usuário criado com sucesso",
+        });
+
+        toggleUserCreated(false);
+    }, []);
 
 
     return (
@@ -203,9 +295,45 @@ const LoginPage: React.FC = () => {
                         </Grid>
                     </Grid>
                 </BoxComponent>
+
+                <NotificationSnackBar
+                    open={snackBar.open}
+                    onClose={handleClose}
+                    borderColor={snackBar.borderColor}
+                    severity={snackBar.severity}
+                    message={snackBar.message}
+                />
             </div>
         </ThemeProvider >
     );
+
+    // const [showNotification, setShowNotification] = useState(true);
+
+    // const handleShowNotification = () => {
+    //     setShowNotification(true);
+    // };
+
+    // const handleClose = (event: any, reason?: string) => {
+    //     if (reason === 'clickaway') {
+    //         return;
+    //     }
+    //     setShowNotification(false);
+    // };
+
+    // return (
+    //     <div>
+    //         <button onClick={handleShowNotification}>Mostrar Notificação</button>
+
+    //         <NotificationSnackBar
+    //             open={showNotification}
+    //             onClose={handleClose}
+    //             borderColor="green"
+    //             severity="success"
+    //             message="snackBar.message"
+    //         />
+
+    //     </div>
+    // );
 };
 
 export default LoginPage;

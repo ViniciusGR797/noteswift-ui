@@ -5,7 +5,7 @@ import { useDarkMode } from '../contexts/DarkModeContext';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { lightTheme, darkTheme } from '../themes/themes';
-import { Button, Grid, Theme } from '@mui/material';
+import { AlertColor, Button, Grid, Theme } from '@mui/material';
 import Copyright from '../components/Copyright';
 import LogoBox from '../components/LogoBox';
 import TextComponent from '../components/TextComponent';
@@ -18,10 +18,44 @@ import TextFieldIcon from '../components/TextFieldIcon';
 import { Person, Mail, Lock } from '@mui/icons-material';
 import OutlineRectangle from '../components/OutlineRectangle';
 import Profile from '../components/Profile';
+import NotificationSnackBar from '../components/NotificationSnackBar';
+import { useUserLogin } from '../contexts/UserLoginContext';
 
 const DashboardPage: React.FC = () => {
+    const { userLogin, toggleUserLogin } = useUserLogin();
     const { darkMode, toggleDarkMode } = useDarkMode();
     const currentTheme = darkMode ? darkTheme : lightTheme;
+
+    const [snackBar, setSnackBar] = useState({
+        open: false,
+        borderColor: '',
+        severity: undefined as AlertColor | undefined,
+        message: '',
+    });
+
+    const handleClose = (event: any, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackBar({
+            open: false,
+            borderColor: snackBar.borderColor,
+            severity: snackBar.severity,
+            message: snackBar.message,
+        });
+    };
+
+    useEffect(() => {
+        setSnackBar({
+            open: userLogin,
+            borderColor: 'green',
+            severity: "success",
+            message: "Login realizado com sucesso",
+        });
+
+        toggleUserLogin(false);
+    }, []);
+
 
     return (
         <ThemeProvider theme={currentTheme}>
@@ -72,7 +106,13 @@ const DashboardPage: React.FC = () => {
                     <LogoBox size="30%" position={{ top: '5%', left: '37%', transform: 'translateX(-50%)' }} isShort={false} />
                 </Link> */}
 
-
+                <NotificationSnackBar
+                    open={snackBar.open}
+                    onClose={handleClose}
+                    borderColor={snackBar.borderColor}
+                    severity={snackBar.severity}
+                    message={snackBar.message}
+                />
 
             </div>
         </ThemeProvider>
