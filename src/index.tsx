@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { DarkModeProvider } from './contexts/DarkModeContext';
 import { UserCreatedProvider } from './contexts/UserCreatedContext';
 import { UserLoginProvider } from './contexts/UserLoginContext';
+import { AuthProvider } from './contexts/AuthContext';
 
 const container = document.getElementById('root');
 if (container) {
@@ -13,13 +14,15 @@ if (container) {
   root.render(
     <React.StrictMode>
       <Router>
-        <DarkModeProvider>
-          <UserCreatedProvider>
-            <UserLoginProvider>
-              <App />
-            </UserLoginProvider>
-          </UserCreatedProvider>
-        </DarkModeProvider>
+        <AuthProvider>
+          <DarkModeProvider>
+            <UserCreatedProvider>
+              <UserLoginProvider>
+                <App />
+              </UserLoginProvider>
+            </UserCreatedProvider>
+          </DarkModeProvider>
+        </AuthProvider>
       </Router>
     </React.StrictMode>
   );

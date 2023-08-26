@@ -5,7 +5,7 @@ import { useDarkMode } from '../contexts/DarkModeContext';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { lightTheme, darkTheme } from '../themes/themes';
-import { Button, Grid, Theme } from '@mui/material';
+import { AlertColor, Button, Grid, Theme } from '@mui/material';
 import Copyright from '../components/Copyright';
 import LogoBox from '../components/LogoBox';
 import TextComponent from '../components/TextComponent';
@@ -17,17 +17,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import TextFieldIcon from '../components/TextFieldIcon';
 import { Mail, Person, Lock } from '@mui/icons-material';
 import Loading from '../components/Loading';
+import UserService from '../services/userService';
 import BoxComponent from '../components/BoxComponent';
 import { useUserCreated } from '../contexts/UserCreatedContext';
+import NotificationSnackBar from '../components/NotificationSnackBar';
 
 const CadastroPage: React.FC = () => {
     const navigate = useNavigate();
     const { userCreated, toggleUserCreated } = useUserCreated();
     const { darkMode, toggleDarkMode } = useDarkMode();
     const currentTheme = darkMode ? darkTheme : lightTheme;
-
-
-
 
     const [inputValues, setInputValues] = useState({
         name: '',
@@ -41,6 +40,25 @@ const CadastroPage: React.FC = () => {
         password: '',
     });
 
+    const [snackBar, setSnackBar] = useState({
+        open: false,
+        borderColor: '',
+        severity: undefined as AlertColor | undefined,
+        message: '',
+    });
+
+    const handleClose = (event: any, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackBar({
+            open: false,
+            borderColor: snackBar.borderColor,
+            severity: snackBar.severity,
+            message: snackBar.message,
+        });
+    };
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setInputValues((prevValues) => ({
@@ -49,7 +67,7 @@ const CadastroPage: React.FC = () => {
         }));
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const newErrors = {
             name: '',
             email: '',
@@ -74,10 +92,43 @@ const CadastroPage: React.FC = () => {
 
         setErrors(newErrors);
 
-        if (!newErrors.email && !newErrors.password) {
-            toggleUserCreated(true)
+        if (!newErrors.name && !newErrors.email && !newErrors.password) {
+            try {
+                const response = await UserService.createUser(inputValues.name, inputValues.email, inputValues.password);
 
-            navigate('/login')
+                if (!response) {
+                    setSnackBar({
+                        open: true,
+                        borderColor: 'red',
+                        severity: "error",
+                        message: "Erro ao consumir API",
+                    });
+
+                } else if (response.status === 201) {
+                    // Salvar token nos cookies
+                    // Aqui você deve ter uma função ou utilitário para salvar o token nos cookies
+                    // Exemplo: saveTokenToCookies(response.data.token);
+
+                    toggleUserCreated(true)
+
+                    navigate('/login')
+                } else {
+                    // Caso a resposta não seja 200, trate o erro de acordo com sua necessidade
+                    setSnackBar({
+                        open: true,
+                        borderColor: 'red',
+                        severity: "error",
+                        message: response.data.msg,
+                    });
+                }
+            } catch (error: any) {
+                setSnackBar({
+                    open: true,
+                    borderColor: 'red',
+                    severity: "error",
+                    message: "Erro ao realizar cadastro",
+                });
+            }
         }
     };
 
@@ -230,6 +281,15 @@ const CadastroPage: React.FC = () => {
                         </Grid>
                     </Grid>
                 </BoxComponent>
+
+                <NotificationSnackBar
+                    open={snackBar.open}
+                    onClose={handleClose}
+                    borderColor={snackBar.borderColor}
+                    severity={snackBar.severity}
+                    message={snackBar.message}
+                />
+
             </div>
         </ThemeProvider>
     );

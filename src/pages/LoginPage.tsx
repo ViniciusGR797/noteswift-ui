@@ -21,11 +21,13 @@ import UserService from '../services/userService';
 import NotificationSnackBar from '../components/NotificationSnackBar';
 import { useUserLogin } from '../contexts/UserLoginContext';
 import { useUserCreated } from '../contexts/UserCreatedContext';
+import { useAuth } from '../contexts/AuthContext';
 
 const LoginPage: React.FC = () => {
     const navigate = useNavigate();
     const { userCreated, toggleUserCreated } = useUserCreated();
-    const { userLogin, toggleUserLogin } = useUserLogin();
+    const { toggleUserLogin } = useUserLogin();
+    const { isAuthenticated, toggleAuth, authenticationError, toggleAuthError, loginVerify } = useAuth();
     const { darkMode, toggleDarkMode } = useDarkMode();
     const currentTheme = darkMode ? darkTheme : lightTheme;
 
@@ -99,24 +101,12 @@ const LoginPage: React.FC = () => {
                     });
 
                 } else if (response.status === 200) {
-                    // Salvar token nos cookies
-                    // Aqui você deve ter uma função ou utilitário para salvar o token nos cookies
-                    // Exemplo: saveTokenToCookies(response.data.token);
-
-                    // Redirecionar para a rota "/dashboard"
-
-                    // setSnackBar({
-                    //     open: true,
-                    //     borderColor: 'green',
-                    //     severity: "success",
-                    //     message: "Logado com sucesso",
-                    // });
-
                     toggleUserLogin(true);
+                    toggleAuth(true);
+                    toggleAuthError(false);
 
                     navigate('/dashboard')
                 } else {
-                    // Caso a resposta não seja 200, trate o erro de acordo com sua necessidade
                     setSnackBar({
                         open: true,
                         borderColor: 'red',
@@ -129,37 +119,42 @@ const LoginPage: React.FC = () => {
                     open: true,
                     borderColor: 'red',
                     severity: "error",
-                    message: "Erro ao realizar Login",
+                    message: "Erro ao realizar login",
                 });
             }
         }
-
-        // setSnackBar({
-        //     open: true,
-        //     borderColor: 'green',
-        //     severity: "success",
-        //     message: "Logado com sucesso",
-        // });
-
-        // setSnackBar({
-        //     open: true,
-        //     borderColor: 'red',
-        //     severity: "error",
-        //     message: "erro - externo",
-        // });
     };
 
     useEffect(() => {
-        setSnackBar({
-            open: userCreated,
-            borderColor: 'green',
-            severity: "success",
-            message: "Usuário criado com sucesso",
-        });
-
-        toggleUserCreated(false);
+        unauthorizedMessage();
+        successfulRegistrationMessage();
     }, []);
 
+    const unauthorizedMessage = () => {
+        if (authenticationError) {  
+            setSnackBar({
+                open: authenticationError,
+                borderColor: 'red',
+                severity: "error",
+                message: "Não tem permissão para acessar o recurso solicitado",
+            });
+
+            toggleAuthError(false);
+        }
+    };
+
+    const successfulRegistrationMessage = () => {
+        if (userCreated) {
+            setSnackBar({
+                open: userCreated,
+                borderColor: 'green',
+                severity: "success",
+                message: "Usuário criado com sucesso",
+            });
+
+            toggleUserCreated(false);
+        }
+    };
 
     return (
         <ThemeProvider theme={currentTheme}>

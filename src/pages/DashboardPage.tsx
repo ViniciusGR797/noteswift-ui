@@ -5,7 +5,7 @@ import { useDarkMode } from '../contexts/DarkModeContext';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { lightTheme, darkTheme } from '../themes/themes';
-import { AlertColor, Button, Grid, Theme } from '@mui/material';
+import { AlertColor, Button, Grid, IconButton, TextField, Theme } from '@mui/material';
 import Copyright from '../components/Copyright';
 import LogoBox from '../components/LogoBox';
 import TextComponent from '../components/TextComponent';
@@ -15,15 +15,17 @@ import Loading from '../components/Loading';
 import FilledRectangle from '../components/FilledRectangle';
 import { Link } from 'react-router-dom';
 import TextFieldIcon from '../components/TextFieldIcon';
-import { Person, Mail, Lock } from '@mui/icons-material';
+import { Person, Mail, Lock, VisibilityOff, Visibility } from '@mui/icons-material';
 import OutlineRectangle from '../components/OutlineRectangle';
 import Profile from '../components/Profile';
 import NotificationSnackBar from '../components/NotificationSnackBar';
 import { useUserLogin } from '../contexts/UserLoginContext';
+import { useAuth } from '../contexts/AuthContext';
 
 const DashboardPage: React.FC = () => {
     const { userLogin, toggleUserLogin } = useUserLogin();
     const { darkMode, toggleDarkMode } = useDarkMode();
+    const { isAuthenticated, loginVerify } = useAuth();
     const currentTheme = darkMode ? darkTheme : lightTheme;
 
     const [snackBar, setSnackBar] = useState({
@@ -46,6 +48,12 @@ const DashboardPage: React.FC = () => {
     };
 
     useEffect(() => {
+        loginVerify()
+
+        successfulLoginMessage();
+    }, []);
+
+    const successfulLoginMessage = () => {
         setSnackBar({
             open: userLogin,
             borderColor: 'green',
@@ -54,7 +62,29 @@ const DashboardPage: React.FC = () => {
         });
 
         toggleUserLogin(false);
-    }, []);
+    };
+
+
+
+
+
+
+
+
+
+    // Renderização condicional
+    if (!isAuthenticated) {
+        // Se não estiver autenticado, você pode renderizar uma mensagem de carregamento ou qualquer coisa apropriada
+        return (
+            <ThemeProvider theme={currentTheme}>
+                <CssBaseline />
+                <Loading /> {/* Renderize um componente de carregamento ou uma mensagem */}
+            </ThemeProvider>
+        );
+    }
+
+
+
 
 
     return (
@@ -113,6 +143,7 @@ const DashboardPage: React.FC = () => {
                     severity={snackBar.severity}
                     message={snackBar.message}
                 />
+
 
             </div>
         </ThemeProvider>
